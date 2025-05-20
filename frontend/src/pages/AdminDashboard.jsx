@@ -1,5 +1,5 @@
 import MetricCard from "../components/MetricCard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TaskCreationModal from "../components/TaskCreate";
 import { taskService } from "../services/taskService";
 import WorldClock from "../components/WorldClock";
@@ -142,18 +142,6 @@ export default function EmployerDashboard() {
     // Here you would typically make an API call to save the team member
     // and update your local state
   };
-
-  // const currentDate = new Date().toLocaleString("en-In", {
-  //   weekday: "long",
-  //   year: "numeric",
-  //   month: "long",
-  //   day: "numeric",
-  //   hour: "2-digit",
-  //   minute: "2-digit",
-  //   second: "2-digit",
-  //   timeZoneName: "short",
-  // });
-
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Topbar */}

@@ -9,6 +9,7 @@ import {
   BellIcon,
   HomeModernIcon,
 } from "@heroicons/react/24/solid";
+import { Link } from "react-router-dom";
 
 function EmployeeHeader() {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -44,9 +45,9 @@ function EmployeeHeader() {
           </div>
           <nav className="hidden md:flex items-center gap-6">
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className={`flex items-center gap-2 text-sm font-medium ${
                   currentPage === item.name
                     ? "text-blue-600"
@@ -55,7 +56,7 @@ function EmployeeHeader() {
               >
                 <item.icon className="h-5 w-5" />
                 {item.name}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>
