@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CurrentTime from "../CurrentTime";
 import {
   ClipboardDocumentListIcon,
@@ -9,15 +9,16 @@ import {
   BellIcon,
   HomeModernIcon,
 } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function EmployeeHeader() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [currentPage, setCurrentPage] = useState("Over View");
+  const location = useLocation();
   const navigation = [
     {
       name: "Over View",
-      href: "/employee/",
+      href: "/employee",
       icon: HomeModernIcon,
     },
     {
@@ -33,11 +34,19 @@ function EmployeeHeader() {
     { name: "Time Tracker", href: "/employee/timetracker", icon: ClockIcon },
     { name: "Documents", href: "/employee/documents", icon: DocumentIcon },
   ];
+  useEffect(() => {
+    const currentPageInfo = navigation.find((item) => {
+      return item.href === location.pathname;
+    });
+
+    setCurrentPage(currentPageInfo.name);
+  }, [location]);
+
   return (
     <header className="bg-white shadow-sm border-b px-8">
       <div className="max-w-7xl mx-auto flex justify-between items-center h-20">
         <div className="flex items-center gap-8">
-          <div className="">
+          <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-bold text-gray-800">My Workspace</h1>
             <span className="text-[12px]">
               <CurrentTime />

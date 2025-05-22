@@ -5,8 +5,6 @@ import {
   CheckCircleIcon,
   ClockIcon,
   CalendarIcon,
-  PlayIcon,
-  EyeIcon,
   ChartBarIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
@@ -18,37 +16,6 @@ const chartData = [
   { name: "In Progress", value: 3 },
   { name: "Due Soon", value: 2 },
   { name: "Completed", value: 4 },
-];
-
-const myTasks = [
-  {
-    id: 1,
-    title: "Fix UI bugs",
-    priority: "High",
-    dueDate: "2025-05-25",
-    status: "In Progress",
-  },
-  {
-    id: 2,
-    title: "Update user documentation",
-    priority: "Medium",
-    dueDate: "2025-05-22",
-    status: "Completed",
-  },
-  {
-    id: 3,
-    title: "Review pull request",
-    priority: "Low",
-    dueDate: "2025-05-28",
-    status: "Not Started",
-  },
-  {
-    id: 4,
-    title: "Team meeting preparation",
-    priority: "High",
-    dueDate: "2025-05-21",
-    status: "Due Soon",
-  },
 ];
 
 const upcomingDeadlines = [
@@ -68,7 +35,7 @@ const upcomingDeadlines = [
 
 function OverView() {
   return (
-    <main className="flex-1 p-8 max-w-7xl mx-auto w-full">
+    <main className="flex-1 mt-10 px-10 w-full">
       {/* Quick Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <MetricCard
@@ -195,115 +162,6 @@ function OverView() {
           <button className="mt-6 w-full py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium">
             View All Deadlines
           </button>
-        </div>
-      </div>
-
-      {/* Tasks Table with improved styling */}
-      <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
-        <div className="p-6 border-b">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-800">My Tasks</h2>
-              <p className="text-sm text-gray-500">
-                View and update your assigned tasks
-              </p>
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search tasks..."
-                className="w-64 px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead>
-              <tr className="bg-gray-50 text-gray-600">
-                <th className="py-4 px-6 font-medium">Title</th>
-                <th className="py-4 px-6 font-medium">Priority</th>
-                <th className="py-4 px-6 font-medium">Due Date</th>
-                <th className="py-4 px-6 font-medium">Status</th>
-                <th className="py-4 px-6 font-medium">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {myTasks.map((task) => (
-                <tr key={task.id} className="hover:bg-gray-50">
-                  <td className="py-4 px-6">{task.title}</td>
-                  <td className="py-4 px-6">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        task.priority === "High"
-                          ? "bg-red-100 text-red-700"
-                          : task.priority === "Medium"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-green-100 text-green-700"
-                      }`}
-                    >
-                      {task.priority}
-                    </span>
-                  </td>
-                  <td className="py-4 px-6 text-gray-500">{task.dueDate}</td>
-                  <td className="py-4 px-6">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        task.status === "Completed"
-                          ? "bg-green-100 text-green-700"
-                          : task.status === "In Progress"
-                          ? "bg-blue-100 text-blue-700"
-                          : task.status === "Due Soon"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-gray-100 text-gray-700"
-                      }`}
-                    >
-                      {task.status}
-                    </span>
-                  </td>
-                  <td className="py-4 px-6">
-                    <div className="flex items-center gap-3">
-                      {/* Replace Edit with View Details */}
-                      <button className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1">
-                        <EyeIcon className="h-4 w-4" />
-                        View Details
-                      </button>
-                      {/* Only show Complete button if task is not completed */}
-                      {task.status !== "Completed" && (
-                        <button className="text-sm text-green-600 hover:text-green-700 flex items-center gap-1">
-                          <CheckCircleIcon className="h-4 w-4" />
-                          Mark Complete
-                        </button>
-                      )}
-                      {/* Add Start button if task is Not Started */}
-                      {task.status === "Not Started" && (
-                        <button className="text-sm text-purple-600 hover:text-purple-700 flex items-center gap-1">
-                          <PlayIcon className="h-4 w-4" />
-                          Start Task
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="p-4 border-t">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">
-              Showing 1 to {myTasks.length} of {myTasks.length} tasks
-            </p>
-            <div className="flex items-center gap-2">
-              <button className="px-3 py-1 border rounded text-sm text-gray-600 hover:bg-gray-50">
-                Previous
-              </button>
-              <button className="px-3 py-1 border rounded text-sm text-gray-600 hover:bg-gray-50">
-                Next
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </main>

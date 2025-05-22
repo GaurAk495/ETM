@@ -205,6 +205,24 @@ export default function TaskCreationModal({
                       </div>
                     </div>
 
+                    {/* <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Project
+                      </label>
+                      <select
+                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        value={selectedProject}
+                        onChange={(e) => setSelectedProject(e.target.value)}
+                      >
+                        <option value="">Select a project</option>
+                        {projects.map((project) => (
+                          <option key={project.id} value={project.id}>
+                            {project.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div> */}
+
                     {/* Priority and Estimated Hours */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-1">

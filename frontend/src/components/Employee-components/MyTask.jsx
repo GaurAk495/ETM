@@ -1,20 +1,25 @@
 import { useState } from "react";
 import {
-  FunnelIcon,
   MagnifyingGlassIcon,
-  ChevronDownIcon,
   ClockIcon,
   CalendarIcon,
   ExclamationCircleIcon,
   CheckCircleIcon,
   EyeIcon,
+  FolderIcon,
   PlayIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
+import CurrentTime from "../CurrentTime";
 
 export default function MyTasks() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterPriority, setFilterPriority] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  // Task Details Modal State
+  const [showTaskDetails, setShowTaskDetails] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const currentUser = "GaurAk495"; // In a real app, this would come from auth context
 
   const tasks = [
     {
@@ -119,8 +124,51 @@ export default function MyTasks() {
     return true;
   });
 
+  // Task Status Update Handler
+  const handleStatusUpdate = (taskId, newStatus) => {
+    // In a real app, this would make an API call
+    console.log(`Updating task ${taskId} status to ${newStatus}`);
+
+    const statusUpdate = {
+      taskId,
+      newStatus,
+      updatedBy: "GaurAk495",
+      updatedAt: "2025-05-21 08:49:30",
+    };
+
+    // Show success message
+    alert(`Task status updated to ${newStatus}`);
+  };
+
+  // View Task Details Handler
+  const handleViewDetails = (task) => {
+    setSelectedTask(task);
+    setShowTaskDetails(true);
+  };
+
+  const dialogBox = (e) => {
+    if (showTaskDetails && selectedTask) {
+      if (e.target.classList.contains("js-taskdetails")) {
+        setShowTaskDetails(false);
+      }
+    }
+  };
+
   return (
     <div className="space-y-6 p-10">
+      {/* Current Time and User Display */}
+      <div className="flex items-center justify-between bg-white rounded-lg shadow-sm border px-6 py-4">
+        <div className="flex items-center gap-4">
+          <div className="text-sm text-gray-500">
+            Current User:{" "}
+            <span className="font-medium text-gray-900">{currentUser}</span>
+          </div>
+          <div className="text-sm text-gray-500">
+            Current Time (UTC):{" "}
+            <span className="font-medium text-gray-900">{<CurrentTime />}</span>
+          </div>
+        </div>
+      </div>
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white rounded-xl shadow-sm border p-6">
@@ -252,6 +300,19 @@ export default function MyTasks() {
                       <div className="font-medium text-gray-900">
                         {task.title}
                       </div>
+                      <div className="text-sm text-gray-500 mt-1">
+                        <span className="inline-flex items-center gap-1">
+                          <FolderIcon className="h-4 w-4" />
+                          {task.project.name}
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div>
+                      <div className="font-medium text-gray-900">
+                        {task.title}
+                      </div>
                       <div className="text-sm text-gray-500">
                         {task.description}
                       </div>
@@ -303,26 +364,36 @@ export default function MyTasks() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <button
-                        className="text-blue-600 hover:text-blue-700"
+                        onClick={() => handleViewDetails(task)}
+                        className="text-blue-600 hover:text-blue-700 p-1 rounded-full hover:bg-blue-50"
                         title="View Details"
                       >
                         <EyeIcon className="h-5 w-5" />
                       </button>
                       {task.status !== "Completed" && (
-                        <button
-                          className="text-green-600 hover:text-green-700"
-                          title={
-                            task.status === "In Progress"
-                              ? "Complete Task"
-                              : "Start Task"
-                          }
-                        >
+                        <>
                           {task.status === "In Progress" ? (
-                            <CheckCircleIcon className="h-5 w-5" />
+                            <button
+                              onClick={() =>
+                                handleStatusUpdate(task.id, "Completed")
+                              }
+                              className="text-green-600 hover:text-green-700 p-1 rounded-full hover:bg-green-50"
+                              title="Mark as Completed"
+                            >
+                              <CheckCircleIcon className="h-5 w-5" />
+                            </button>
                           ) : (
-                            <PlayIcon className="h-5 w-5" />
+                            <button
+                              onClick={() =>
+                                handleStatusUpdate(task.id, "In Progress")
+                              }
+                              className="text-blue-600 hover:text-blue-700 p-1 rounded-full hover:bg-blue-50"
+                              title="Start Task"
+                            >
+                              <PlayIcon className="h-5 w-5" />
+                            </button>
                           )}
-                        </button>
+                        </>
                       )}
                     </div>
                   </td>
@@ -349,6 +420,167 @@ export default function MyTasks() {
           </div>
         </div>
       </div>
+      {/* Task Details Modal */}
+      {showTaskDetails && selectedTask && (
+        <div
+          onClick={dialogBox}
+          className="fixed inset-0 bg-black/30 bg-opacity-25 flex items-center justify-center z-50 js-taskdetails"
+        >
+          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="border-b px-6 py-4 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Task Details
+              </h3>
+              <button
+                onClick={() => setShowTaskDetails(false)}
+                className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Task Title */}
+              <div>
+                <h4 className="text-sm font-medium text-gray-500">
+                  Task Title
+                </h4>
+                <p className="mt-1 text-lg font-medium text-gray-900">
+                  {selectedTask.title}
+                </p>
+              </div>
+
+              {/* Task Description */}
+              <div>
+                <h4 className="text-sm font-medium text-gray-500">
+                  Description
+                </h4>
+                <p className="mt-1 text-gray-900">{selectedTask.description}</p>
+              </div>
+
+              {/* Task Details Grid */}
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-500">Project</h4>
+                  <p className="mt-1 text-gray-900">{selectedTask.project}</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-gray-500">
+                    Assigned By
+                  </h4>
+                  <p className="mt-1 text-gray-900">
+                    {selectedTask.assignedBy}
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-gray-500">
+                    Due Date
+                  </h4>
+                  <p className="mt-1 text-gray-900">{selectedTask.dueDate}</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-gray-500">Status</h4>
+                  <span
+                    className={`mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+                      selectedTask.status
+                    )}`}
+                  >
+                    {selectedTask.status}
+                  </span>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-gray-500">
+                    Priority
+                  </h4>
+                  <span
+                    className={`mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(
+                      selectedTask.priority
+                    )}`}
+                  >
+                    {selectedTask.priority}
+                  </span>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-gray-500">
+                    Time Tracking
+                  </h4>
+                  <div className="mt-1">
+                    <p className="text-gray-900">
+                      {selectedTask.timeSpent}h / {selectedTask.estimatedHours}h
+                    </p>
+                    <div className="w-full h-1.5 bg-gray-200 rounded-full mt-1">
+                      <div
+                        className="h-full bg-blue-600 rounded-full"
+                        style={{
+                          width: `${
+                            (selectedTask.timeSpent /
+                              selectedTask.estimatedHours) *
+                            100
+                          }%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Task History */}
+              <div>
+                <h4 className="text-sm font-medium text-gray-500 mb-2">
+                  Task History
+                </h4>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-sm">
+                    <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+                    <span className="text-gray-500">
+                      Task created by {selectedTask.assignedBy}
+                    </span>
+                    <span className="text-gray-400">•</span>
+                    <span className="text-gray-400">2025-05-20 10:00:00</span>
+                  </div>
+                  {selectedTask.status === "In Progress" && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <div className="h-2 w-2 bg-blue-500 rounded-full"></div>
+                      <span className="text-gray-500">
+                        Task started by GaurAk495
+                      </span>
+                      <span className="text-gray-400">•</span>
+                      <span className="text-gray-400">2025-05-21 08:30:00</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t px-6 py-4 bg-gray-50 flex justify-end gap-3">
+              <button
+                onClick={() => setShowTaskDetails(false)}
+                className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                Close
+              </button>
+              {selectedTask.status !== "Completed" && (
+                <button
+                  onClick={() => {
+                    handleStatusUpdate(
+                      selectedTask.id,
+                      selectedTask.status === "In Progress"
+                        ? "Completed"
+                        : "In Progress"
+                    );
+                    setShowTaskDetails(false);
+                  }}
+                  className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                >
+                  {selectedTask.status === "In Progress"
+                    ? "Mark as Completed"
+                    : "Start Task"}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

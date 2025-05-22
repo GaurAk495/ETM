@@ -3,10 +3,9 @@ import { NavLink, useLocation } from "react-router-dom";
 
 export default function Nav() {
   const location = useLocation();
-  if (location.pathname === "/app" || location.pathname == "/employee") {
+  if (location.pathname === "/admin" || location.pathname == "/employee") {
     return;
   }
-
   const linkClass = ({ isActive }) =>
     isActive ? "text-blue-600 font-bold" : "text-white/80";
   return (
@@ -17,10 +16,7 @@ export default function Nav() {
       <NavLink to="/login" className={linkClass}>
         Login
       </NavLink>
-      <NavLink to="/signup" className={linkClass}>
-        Signup
-      </NavLink>
-      <NavLink to="/app" className={linkClass}>
+      <NavLink to="/admin" className={linkClass}>
         Dashboard
       </NavLink>
       <NavLink to="/employee" className={linkClass}>

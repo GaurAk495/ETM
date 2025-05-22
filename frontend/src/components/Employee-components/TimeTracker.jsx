@@ -3,7 +3,7 @@ import { PlayIcon, PauseIcon, StopIcon } from "@heroicons/react/24/solid";
 
 export default function TimeTracker() {
   const [isTracking, setIsTracking] = useState(false);
-  const [currentTask, setCurrentTask] = useState(null);
+  const [currentTask, setCurrentTask] = useState(1);
   const [timer, setTimer] = useState(0);
   const [todayTotal, setTodayTotal] = useState(0);
   const [timeEntries, setTimeEntries] = useState([
@@ -45,7 +45,7 @@ export default function TimeTracker() {
 
         <div className="flex items-center gap-4">
           <select
-            className="flex-1 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+            className="flex-1 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 py-2 px-2"
             value={currentTask}
             onChange={(e) => setCurrentTask(e.target.value)}
           >
